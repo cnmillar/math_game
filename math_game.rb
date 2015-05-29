@@ -32,17 +32,26 @@ def math_game
 		while
 			player1_score = one_game(player1_score, 1, player1_name)
 			if player1_score == 3
-				puts "#{player1_name} wins!"
+				puts "#{player2_name} wins!"
 				break
 			end
 			player2_score = one_game(player2_score, 2, player2_name)
 			if player2_score == 3
-				puts "#{player2_name} wins!"
+				puts "#{player1_name} wins!"
 				break
 			end	
 		end
+
 		puts "Would you like to replay? Yes of no."
-		game = "OFF" if gets.chomp.downcase == ("no")
+		answer = gets.chomp.downcase
+
+		if answer != ("no" || "yes")
+			puts "I don't understand. Please choose 'yes' or 'no'!"
+			answer = gets.chomp.downcase
+		end
+
+		game = "OFF" if answer == ("no")
+
 	end
 end
 
