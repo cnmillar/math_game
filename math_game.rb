@@ -1,49 +1,46 @@
 require 'backports'
 require 'pry'
 require 'colorize'
-
-def one_game(current_score, player, player_name)
-		num1 = rand(1...20)
-		num2 = rand(1...20)
-		real_answer= num1 + num2
-		color = [:blue, :red]
-
-		puts "#{player_name.capitalize}: What does #{num1} plus #{num2} equal?".colorize(color[player])
-		player_answer = gets.chomp
-
-		(real_answer != player_answer.to_i) ? (updated_score = current_score += 1)  : (updated_score = current_score)
-		updated_score
-end
-
+require './player.rb'
+require './one_game.rb'
 
 def math_game
 	game = "ON"
 
 	puts "Player 1 name:"
 	player1_name = gets.chomp
+	player1 = Player.new(player1_name, 0, 3, :blue)
+
 	puts "Player 2 name:"
 	player2_name = gets.chomp
+	player2 = Player.new(player2_name, 0, 3, :red)
 	
 	while game == "ON"
-		player = [1,2]
-		player1_score = 0
-		player2_score = 0
+		player1.lives = 3
+		player2.lives = 3
 
 		while
-			player1_score = one_game(player1_score, 1, player1_name)
-			if player1_score == 3
-				puts "#{player2_name} wins!"
+			player1 = one_game(player1)
+			if player1.lives == 0
+				player2.gain_points
+				puts "#{player2.name} wins! The current tournament score has #{player1.name} with #{player1.score} game(s) won" + 
+				" and #{player2.name} with #{player2.score} game(s) won!"
 				break
 			end
-			player2_score = one_game(player2_score, 2, player2_name)
-			if player2_score == 3
-				puts "#{player1_name} wins!"
+
+			player2 = one_game(player2)
+			if player2.lives == 0
+				player1.gain_points
+				puts "#{player1.name} wins! The current tournament score has #{player1.name} with #{player1.score} game(s) won" + 
+				" and #{player2.name} with #{player2.score} game(s) won!"
 				break
 			end	
 		end
 
-		puts "Would you like to replay? Yes of no."
+		puts "Would you like to play again? Yes of no."
 		answer = gets.chomp.downcase
+
+		# binding.pry
 
 		if answer != ("no" || "yes")
 			puts "I don't understand. Please choose 'yes' or 'no'!"
