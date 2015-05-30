@@ -42,7 +42,7 @@ def math_game
 
 		# binding.pry
 
-		if answer != ("no" || "yes")
+		if answer != "no" && answer != "yes"
 			puts "I don't understand. Please choose 'yes' or 'no'!"
 			answer = gets.chomp.downcase
 		end
